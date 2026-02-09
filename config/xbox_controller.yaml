@@ -1,0 +1,140 @@
+# Xbox Controller Configuration
+# This file defines button mappings, axis mappings, and normalization bounds
+
+controller:
+  name: "Xbox Controller"
+  vendor_patterns:
+    - "xbox"
+    - "microsoft"
+    - "xpad"
+  exclude_patterns:
+    - "consumer control"
+    - "keyboard"
+
+# Button mappings: evdev code -> display name
+buttons:
+  - code: 304  # BTN_A
+    name: "A"
+  - code: 305  # BTN_B
+    name: "B"
+  - code: 307  # BTN_X
+    name: "X"
+  - code: 308  # BTN_Y
+    name: "Y"
+  - code: 310  # BTN_TL
+    name: "LB"
+  - code: 311  # BTN_TR
+    name: "RB"
+  - code: 314  # BTN_SELECT
+    name: "Back"
+  - code: 315  # BTN_START
+    name: "Start"
+  - code: 316  # BTN_MODE
+    name: "Guide"
+  - code: 317  # BTN_THUMBL
+    name: "L3"
+  - code: 318  # BTN_THUMBR
+    name: "R3"
+
+# Dpad buttons: maps axis code + value -> button name
+# Dpad comes as axes (ABS_HAT0X, ABS_HAT0Y) but we treat them as discrete buttons
+dpad_buttons:
+  - axis_code: 16  # ABS_HAT0X
+    value: -1
+    name: "Dpad-Left"
+  - axis_code: 16  # ABS_HAT0X
+    value: 1
+    name: "Dpad-Right"
+  - axis_code: 17  # ABS_HAT0Y
+    value: -1
+    name: "Dpad-Up"
+  - axis_code: 17  # ABS_HAT0Y
+    value: 1
+    name: "Dpad-Down"
+
+# Axis mappings: evdev code -> display name, min, max, deadzone, normalization range
+# Each axis can have its own normalization range (e.g., -1.0 to 1.0 for sticks, 0.0 to 1.0 for triggers)
+axes:
+  - code: 0    # ABS_X
+    name: "Left-X"
+    min: -32768
+    max: 32767
+    deadzone: 7849  # ~24% of range
+    normalize: true
+    output_min: -1.0  # Normalize to -1.0 (full left) to 1.0 (full right)
+    output_max: 1.0
+  - code: 1    # ABS_Y
+    name: "Left-Y"
+    min: -32768
+    max: 32767
+    deadzone: 7849
+    normalize: true
+    output_min: -1.0  # Normalize to -1.0 (full down) to 1.0 (full up)
+    output_max: 1.0
+  - code: 2    # ABS_Z
+    name: "LT"
+    min: 0
+    max: 255
+    deadzone: 0
+    normalize: true
+    output_min: 0.0   # Normalize to 0.0 (released) to 1.0 (fully pressed)
+    output_max: 1.0
+  - code: 5    # ABS_RZ
+    name: "RT"
+    min: 0
+    max: 255
+    deadzone: 0
+    normalize: true
+    output_min: 0.0   # Normalize to 0.0 (released) to 1.0 (fully pressed)
+    output_max: 1.0
+  - code: 3    # ABS_RX
+    name: "Right-X"
+    min: -32768
+    max: 32767
+    deadzone: 7849
+    normalize: true
+    output_min: -1.0  # Normalize to -1.0 (full left) to 1.0 (full right)
+    output_max: 1.0
+  - code: 4    # ABS_RY
+    name: "Right-Y"
+    min: -32768
+    max: 32767
+    deadzone: 7849
+    normalize: true
+    output_min: -1.0  # Normalize to -1.0 (full down) to 1.0 (full up)
+    output_max: 1.0
+  - code: 16   # ABS_HAT0X
+    name: "Dpad-X"
+    min: -1
+    max: 1
+    deadzone: 0
+    normalize: false
+    output_min: -1.0  # -1 = Left, 0 = Center, 1 = Right (also shown as buttons)
+    output_max: 1.0
+  - code: 17   # ABS_HAT0Y
+    name: "Dpad-Y"
+    min: -1
+    max: 1
+    deadzone: 0
+    normalize: false
+    output_min: -1.0  # -1 = Up, 0 = Center, 1 = Down (also shown as buttons)
+    output_max: 1.0
+
+# Normalization settings
+normalization:
+  # Output range for normalized values (-1.0 to 1.0 for sticks, 0.0 to 1.0 for triggers)
+  output_min: -1.0
+  output_max: 1.0
+  # Apply deadzone before normalization
+  apply_deadzone: true
+
+# Vibration/Force Feedback configuration
+vibration:
+  # Enable vibration support
+  enabled: true
+  # Motor intensity range (0-65535)
+  max_intensity: 65535
+  # Default duration in milliseconds (0 = infinite until stopped)
+  default_duration_ms: 0
+  # Vibration commands can be sent via UDP on vibration_port
+  # Format: VibrationPacket with left_motor, right_motor, duration_ms
